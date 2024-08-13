@@ -1,0 +1,52 @@
+public void addLibro(Libro libro) {
+    String query = "INSERT INTO libros (CodLibro, Título, Autor, Editorial) VALUES (?, ?, ?, ?)";
+    try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, libro.getCodLibro());
+        stmt.setString(2, libro.getTitulo());
+        stmt.setString(3, libro.getAutor());
+        stmt.setString(4, libro.getEditorial());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+public Libro getLibro(int codLibro) {
+    String query = "SELECT * FROM libros WHERE CodLibro = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, codLibro);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            return new Libro(rs.getInt("CodLibro"), rs.getString("Título"), rs.getString("Autor"), rs.getString("Editorial"));
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return null;
+}
+
+
+public void updateLibro(Libro libro) {
+    String query = "UPDATE libros SET Título = ?, Autor = ?, Editorial = ? WHERE CodLibro = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setString(1, libro.getTitulo());
+        stmt.setString(2, libro.getAutor());
+        stmt.setString(3, libro.getEditorial());
+        stmt.setInt(4, libro.getCodLibro());
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
+
+
+public void deleteLibro(int codLibro) {
+    String query = "DELETE FROM libros WHERE CodLibro = ?";
+    try (Connection conn = DatabaseConnection.getConnection(); PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, codLibro);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+}
