@@ -1,0 +1,24 @@
+-- Creación de la tabla Libros
+CREATE TABLE Libros (
+    CodLibro INT PRIMARY KEY,
+    Título VARCHAR(255) NOT NULL,
+    Autor VARCHAR(255) NOT NULL,
+    Editorial VARCHAR(255) NOT NULL
+);
+
+-- Creación de la tabla Lectores
+CREATE TABLE Lectores (
+    IdLector INT PRIMARY KEY,
+    Apellido VARCHAR(255) NOT NULL,
+    Nombre VARCHAR(255) NOT NULL
+);
+
+-- Creación de la tabla Préstamos
+CREATE TABLE Prestamos (
+    CodLibro INT,
+    IdLector INT,
+    FechaDev DATE,
+    PRIMARY KEY (CodLibro, IdLector),
+    FOREIGN KEY (CodLibro) REFERENCES Libros(CodLibro),
+    FOREIGN KEY (IdLector) REFERENCES Lectores(IdLector)
+);
